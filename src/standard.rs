@@ -5,7 +5,7 @@ use crate::RotaryEncoder;
 
 /// StandardMode
 /// This mode is best used when polled at ~900Hz.
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Clone, Debug, Eq, PartialEq)]
 pub struct StandardMode {
     /// The pin state
     pin_state: [u8; 2],

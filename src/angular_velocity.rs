@@ -31,6 +31,8 @@ pub struct AngularVelocityMode {
     velocity_action_ms: u64,
     /// The last timestamp in mS
     previous_time_millis: u64,
+    direction: Direction,
+    count: i128,
 }
 
 impl<DT, CLK> RotaryEncoder<AngularVelocityMode, DT, CLK>
@@ -92,6 +94,8 @@ impl AngularVelocityMode {
             velocity_action_ms: DEFAULT_VELOCITY_ACTION_MS,
             velocity_dec_factor: DEFAULT_VELOCITY_DEC_FACTOR,
             velocity_inc_factor: DEFAULT_VELOCITY_INC_FACTOR,
+            direction: Direction::None,
+            count: 0,
         }
     }
 
@@ -130,6 +134,29 @@ impl AngularVelocityMode {
         }
 
         dir
+    }
+
+    /// Updates the count on each iteration. Call when using self-count feature after `update()`.
+    pub fn update_count(&mut self) {
+        match self.direction {
+            Direction::None => {}
+            Direction::Clockwise => {
+                self.count += 1;
+            }
+            Direction::Anticlockwise => {
+                self.count -= 1;
+            }
+        }
+    }
+
+    /// Call after update and between iterations
+    pub fn count(&self) -> i128 {
+        self.count
+    }
+
+    /// Query encoder direction
+    pub fn direction(&self) -> Direction {
+        self.direction
     }
 }
 
