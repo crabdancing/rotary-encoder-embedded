@@ -29,6 +29,20 @@ where
             self.pin_clk.is_high().unwrap_or_default(),
         )
     }
+    /// Updates the count on each iteration. Call when using self-count feature after `update()`.
+    pub fn update_count(&mut self) {
+        self.mode.update_count()
+    }
+
+    /// Call after update and between iterations
+    pub fn count(&self) -> i128 {
+        self.mode.count
+    }
+
+    /// Query encoder direction
+    pub fn direction(&self) -> Direction {
+        self.mode.direction
+    }
 }
 
 impl StandardMode {
