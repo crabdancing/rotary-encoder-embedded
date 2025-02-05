@@ -76,11 +76,6 @@ where
         )
     }
 
-    /// Updates the count on each iteration. Call when using self-count feature after `update()`.
-    pub fn update_count(&mut self) {
-        self.mode.update_count()
-    }
-
     /// Call after update and between iterations
     pub fn count(&self) -> i128 {
         self.mode.count
@@ -149,19 +144,6 @@ impl AngularVelocityMode {
         }
 
         dir
-    }
-
-    /// Updates the count on each iteration. Call when using self-count feature after `update()`.
-    pub fn update_count(&mut self) {
-        match self.direction {
-            Direction::None => {}
-            Direction::Clockwise => {
-                self.count += 1;
-            }
-            Direction::Anticlockwise => {
-                self.count -= 1;
-            }
-        }
     }
 
     /// Call after update and between iterations

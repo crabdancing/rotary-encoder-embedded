@@ -29,10 +29,6 @@ where
             self.pin_clk.is_high().unwrap_or_default(),
         )
     }
-    /// Updates the count on each iteration. Call when using self-count feature after `update()`.
-    pub fn update_count(&mut self) {
-        self.mode.update_count()
-    }
 
     /// Call after update and between iterations
     pub fn count(&self) -> i128 {
@@ -83,19 +79,6 @@ impl StandardMode {
         self.direction = direction;
 
         direction
-    }
-
-    /// Updates the count on each iteration. Call when using self-count feature after `update()`.
-    pub fn update_count(&mut self) {
-        match self.direction {
-            Direction::None => {}
-            Direction::Clockwise => {
-                self.count += 1;
-            }
-            Direction::Anticlockwise => {
-                self.count -= 1;
-            }
-        }
     }
 
     /// Call after update and between iterations
