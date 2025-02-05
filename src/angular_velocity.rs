@@ -76,6 +76,21 @@ where
         )
     }
 
+    /// Updates the count on each iteration. Call when using self-count feature after `update()`.
+    pub fn update_count(&mut self) {
+        self.mode.update_count()
+    }
+
+    /// Call after update and between iterations
+    pub fn count(&self) -> i128 {
+        self.mode.count
+    }
+
+    /// Query encoder direction
+    pub fn direction(&self) -> Direction {
+        self.mode.direction
+    }
+
     /// Returns the current angular velocity of the RotaryEncoder
     /// The Angular Velocity is a value between 0.0 and 1.0
     /// This is useful for incrementing/decrementing a value in an exponential fashion
