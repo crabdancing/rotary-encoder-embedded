@@ -65,9 +65,18 @@ impl StandardMode {
 
         let mut direction: Direction = Direction::None;
 
-        if a == PIN_EDGE && b == 0x00 {
+        let a_is_pin_edge = a == PIN_EDGE;
+        let b_is_pin_edge = b == PIN_EDGE;
+
+        if a_is_pin_edge {
+            self.count += 1;
+        }
+        if b_is_pin_edge {
+            self.count -= 1;
+        }
+        if a_is_pin_edge && b == 0x00 {
             direction = Direction::Anticlockwise;
-        } else if b == PIN_EDGE && a == 0x00 {
+        } else if b_is_pin_edge && a == 0x00 {
             direction = Direction::Clockwise;
         }
 
