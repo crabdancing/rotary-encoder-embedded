@@ -9,6 +9,8 @@ use crate::RotaryEncoder;
 pub struct StandardMode {
     /// The pin state
     pin_state: [u8; 2],
+    direction: Direction,
+    count: i128,
 }
 
 // For debouncing of pins, use 0x0f (b00001111) and 0x0c (b00001100) etc.
@@ -34,6 +36,8 @@ impl StandardMode {
     pub fn new() -> Self {
         Self {
             pin_state: [0xFF, 2],
+            direction: Direction::None,
+            count: 0,
         }
     }
 
@@ -45,15 +49,40 @@ impl StandardMode {
         let a = self.pin_state[0] & PIN_MASK;
         let b = self.pin_state[1] & PIN_MASK;
 
-        let mut dir: Direction = Direction::None;
+        let mut direction: Direction = Direction::None;
 
         if a == PIN_EDGE && b == 0x00 {
-            dir = Direction::Anticlockwise;
+            direction = Direction::Anticlockwise;
         } else if b == PIN_EDGE && a == 0x00 {
-            dir = Direction::Clockwise;
+            direction = Direction::Clockwise;
         }
 
-        dir
+        self.direction = direction;
+
+        direction
+    }
+
+    /// Updates the count on each iteration. Call when using self-count feature after `update()`.
+    pub fn update_count(&mut self) {
+        match self.direction {
+            Direction::None => {}
+            Direction::Clockwise => {
+                self.count += 1;
+            }
+            Direction::Anticlockwise => {
+                self.count -= 1;
+            }
+        }
+    }
+
+    /// Call after update and between iterations
+    pub fn count(&self) -> i128 {
+        self.count
+    }
+
+    /// Query encoder direction
+    pub fn direction(&self) -> Direction {
+        self.direction
     }
 }
 
